@@ -1,0 +1,15 @@
+C:\Users\Clive\Source\Repos\BroadcastTunnel\bin\Debug\BroadcastTunnel.exe.config
+C:\Users\Clive\Source\Repos\BroadcastTunnel\bin\Debug\BroadcastTunnel.exe
+C:\Users\Clive\Source\Repos\BroadcastTunnel\bin\Debug\BroadcastTunnel.pdb
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.csprojAssemblyReference.cache
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\MainWindow.g.cs
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\App.g.cs
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel_MarkupCompile.cache
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel_MarkupCompile.lref
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\MainWindow.baml
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.g.resources
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.Properties.Resources.resources
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.csproj.GenerateResource.cache
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.csproj.CoreCompileInputs.cache
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.exe
+C:\Users\Clive\Source\Repos\BroadcastTunnel\obj\Debug\BroadcastTunnel.pdb

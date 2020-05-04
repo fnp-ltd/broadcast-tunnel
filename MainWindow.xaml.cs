@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace BroadcastTunnel
     /// </summary>
     public partial class MainWindow : Window
     {
+        const int REMOTE_CLIENT_PORT = 46353;
         private Task relayTask;
         private string remoteAddressText;
         private string portText;
@@ -30,6 +32,10 @@ namespace BroadcastTunnel
         private int localPort;
         private int packetsSent;
         private int packetsReceived;
+        private IPEndPoint remoteEndpoint;
+        private UdpClient remoteClient;
+        private IPEndPoint broadcastEndpoint;
+        private UdpClient broadcastClient;
 
         public MainWindow()
         {
@@ -44,6 +50,7 @@ namespace BroadcastTunnel
                 logScrollViewer.ScrollToBottom();
             });
         }
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
             button.IsEnabled = false;
@@ -58,13 +65,13 @@ namespace BroadcastTunnel
             rcvdTextBox.Text = "0";
         }
 
-        private void packetSentCount()
+        private void packetSentCountInc()
         {
             packetsSent++;
             sentTextBox.Dispatcher.Invoke(() => { sentTextBox.Text = packetsSent.ToString(); });
         }
 
-        private void packetRcvdCount()
+        private void packetRcvdCountInc()
         {
             packetsReceived++;
             rcvdTextBox.Dispatcher.Invoke(() => { rcvdTextBox.Text = packetsReceived.ToString(); });
@@ -98,8 +105,33 @@ namespace BroadcastTunnel
             catch (Exception ex)
             {
                 Log(ex.Message);
+                return;
             }
-            Thread.Sleep(1000);
+
+            remoteEndpoint = new IPEndPoint(IPAddress.Any, REMOTE_CLIENT_PORT);
+            remoteClient = new UdpClient(remoteEndpoint);
+            remoteClient.BeginReceive(RemoteReceived, null);
+
+            broadcastEndpoint = new IPEndPoint(IPAddress.Any, localPort);
+            broadcastClient = new UdpClient();
+            broadcastClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            broadcastClient.ExclusiveAddressUse = false; // only if you want to send/receive on same machine.
+            broadcastClient.Client.Bind(broadcastEndpoint);
+            broadcastClient.BeginReceive(new AsyncCallback(this.BroadcastReceived), null);
+        }
+
+        private void RemoteReceived(IAsyncResult ar)
+        {
+            byte[] receiveBytes = remoteClient.EndReceive(ar, ref remoteEndpoint);
+            broadcastClient.Send(receiveBytes, receiveBytes.Length, broadcastEndpoint);
+            packetRcvdCountInc();
+        }
+
+        private void BroadcastReceived(IAsyncResult ar)
+        {
+            byte[] receiveBytes = broadcastClient.EndReceive(ar, ref broadcastEndpoint);
+            remoteClient.Send(receiveBytes, receiveBytes.Length, remoteEndpoint);
+            packetSentCountInc();
         }
     }
 }
